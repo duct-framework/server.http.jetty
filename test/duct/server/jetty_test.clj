@@ -9,6 +9,7 @@
   (let [response {:status 200 :headers {} :body "test"}
         handler  (constantly response)
         config   {:duct.server/jetty {:port 3400, :handler handler}}]
+
     (testing "server starts"
       (let [system (ig/init config)]
         (try
@@ -17,8 +18,15 @@
             (is (= (:body response) "test")))
           (finally
             (ig/halt! system)))))
+
     (testing "server stops"
-      (is (thrown? ConnectException (http/get "http://127.0.0.1:3400/"))))))
+      (is (thrown? ConnectException (http/get "http://127.0.0.1:3400/"))))
+
+    (testing "halt is idempotent"
+      (let [system (ig/init config)]
+        (ig/halt! system)
+        (ig/halt! system)
+        (is (-> system :duct.server/jetty :server .isStopped))))))
 
 (deftest resume-and-suspend-test
   (let [response1 {:status 200 :headers {} :body "foo"}
@@ -62,4 +70,10 @@
             (is (= (:status response) 200))
             (is (= (:body response) "bar")))
           (finally
-            (ig/halt! system2)))))))
+            (ig/halt! system2)))))
+
+    (testing "suspend and result with missing config"
+      (let [system1  (doto (ig/init config1) ig/suspend!)
+            system2  (ig/resume {} system1)]
+        (is (-> system1 :duct.server/jetty :server .isStopped))
+        (is (= system2 {}))))))
