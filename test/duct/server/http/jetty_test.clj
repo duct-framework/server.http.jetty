@@ -5,6 +5,9 @@
             duct.server.http.jetty
             [integrant.core :as ig]))
 
+(deftest key-test
+  (is (isa? :duct.server.http/jetty :duct.server/http)))
+
 (deftest init-and-halt-test
   (let [response {:status 200 :headers {} :body "test"}
         handler  (constantly response)

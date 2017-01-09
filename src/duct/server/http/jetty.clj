@@ -3,6 +3,8 @@
   (:require [integrant.core :as ig]
             [ring.adapter.jetty :as jetty]))
 
+(derive :duct.server.http/jetty :duct.server/http)
+
 (defmethod ig/init-key :duct.server.http/jetty [_ opts]
   (let [handler (atom (delay (:handler opts)))
         options (-> opts (dissoc :handler) (assoc :join? false))]
