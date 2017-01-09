@@ -1,14 +1,14 @@
-(ns duct.server.jetty-test
+(ns duct.server.http.jetty-test
   (:import java.net.ConnectException)
   (:require [clj-http.client :as http]
             [clojure.test :refer :all]
-            [duct.server.jetty :refer :all]
+            duct.server.http.jetty
             [integrant.core :as ig]))
 
 (deftest init-and-halt-test
   (let [response {:status 200 :headers {} :body "test"}
         handler  (constantly response)
-        config   {:duct.server/jetty {:port 3400, :handler handler}}]
+        config   {:duct.server.http/jetty {:port 3400, :handler handler}}]
 
     (testing "server starts"
       (let [system (ig/init config)]
@@ -26,23 +26,23 @@
       (let [system (ig/init config)]
         (ig/halt! system)
         (ig/halt! system)
-        (is (-> system :duct.server/jetty :server .isStopped))))))
+        (is (-> system :duct.server.http/jetty :server .isStopped))))))
 
 (deftest resume-and-suspend-test
   (let [response1 {:status 200 :headers {} :body "foo"}
         response2 {:status 200 :headers {} :body "bar"}
-        config1   {:duct.server/jetty {:port 3400, :handler (constantly response1)}}
-        config2   {:duct.server/jetty {:port 3400, :handler (constantly response2)}}]
+        config1   {:duct.server.http/jetty {:port 3400, :handler (constantly response1)}}
+        config2   {:duct.server.http/jetty {:port 3400, :handler (constantly response2)}}]
 
     (testing "suspend and resume"
       (let [system1  (doto (ig/init config1) ig/suspend!)
             response (future (http/get "http://127.0.0.1:3400/"))
             system2  (ig/resume config2 system1)]
         (try
-          (is (identical? (-> system1 :duct.server/jetty :handler)
-                          (-> system2 :duct.server/jetty :handler)))
-          (is (identical? (-> system1 :duct.server/jetty :server)
-                          (-> system2 :duct.server/jetty :server)))
+          (is (identical? (-> system1 :duct.server.http/jetty :handler)
+                          (-> system2 :duct.server.http/jetty :handler)))
+          (is (identical? (-> system1 :duct.server.http/jetty :server)
+                          (-> system2 :duct.server.http/jetty :server)))
           (is (= (:status @response) 200))
           (is (= (:body @response) "bar"))
           (finally
@@ -51,10 +51,10 @@
 
     (testing "suspend and resume with different config"
       (let [system1  (doto (ig/init config1) ig/suspend!)
-            config2' (assoc-in config2 [:duct.server/jetty :port] 3401)
+            config2' (assoc-in config2 [:duct.server.http/jetty :port] 3401)
             system2  (ig/resume config2' system1)]
         (try
-          (is (-> system1 :duct.server/jetty :server .isStopped))
+          (is (-> system1 :duct.server.http/jetty :server .isStopped))
           (let [response (http/get "http://127.0.0.1:3401/")]
             (is (= (:status response) 200))
             (is (= (:body response) "bar")))
@@ -75,5 +75,5 @@
     (testing "suspend and result with missing config"
       (let [system1  (doto (ig/init config1) ig/suspend!)
             system2  (ig/resume {} system1)]
-        (is (-> system1 :duct.server/jetty :server .isStopped))
+        (is (-> system1 :duct.server.http/jetty :server .isStopped))
         (is (= system2 {}))))))
