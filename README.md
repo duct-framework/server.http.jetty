@@ -1,8 +1,9 @@
 # server.http.jetty
 
-Integrant multimethods for running a Jetty server for the [Duct][]
+Integrant multimethods for running a [Jetty][] server for the [Duct][]
 framework.
 
+[jetty]: https://eclipse.org/jetty/
 [duct]: https://github.com/duct-framework/duct
 
 ## Installation
