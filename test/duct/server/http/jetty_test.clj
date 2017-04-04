@@ -2,8 +2,14 @@
   (:import java.net.ConnectException)
   (:require [clj-http.client :as http]
             [clojure.test :refer :all]
-            duct.server.http.jetty
+            [duct.core.protocols :as p]
+            [duct.server.http.jetty :as jetty]
             [integrant.core :as ig]))
+
+(defrecord TestLogger [logs]
+  p/Logger
+  (-log [_ level ns-str file line event data]
+    (swap! logs conj [event data])))
 
 (deftest key-test
   (is (isa? :duct.server.http/jetty :duct.server/http)))
@@ -79,4 +85,16 @@
       (let [system1  (doto (ig/init config1) ig/suspend!)
             system2  (ig/resume {} system1)]
         (is (-> system1 :duct.server.http/jetty :server .isStopped))
-        (is (= system2 {}))))))
+        (is (= system2 {}))))
+
+    (testing "logger is replaced"
+      (let [logs1   (atom [])
+            logs2   (atom [])
+            config1 (assoc-in config1 [:duct.server.http/jetty :logger] (->TestLogger logs1))
+            config2 (assoc-in config2 [:duct.server.http/jetty :logger] (->TestLogger logs2))
+            system1 (doto (ig/init config1) ig/suspend!)
+            system2 (ig/resume config2 system1)]
+        (ig/halt! system2)
+        (is (= @logs1 [[::jetty/starting-server {:port 3400}]]))
+        (is (= @logs2 [[::jetty/stopping-server nil]]))
+        (ig/halt! system1)))))
