@@ -30,6 +30,10 @@ For example:
               :body    "Hello World"})}}
 ```
 
+A `:logger` key may also be specified, which will be used to log when
+the server starts and when it stops. The value of the key should be an
+implementation of the `duct.core.protocols/Logger` protocol.
+
 [ring jetty adapter]: https://ring-clojure.github.io/ring/ring.adapter.jetty.html
 
 ## License
