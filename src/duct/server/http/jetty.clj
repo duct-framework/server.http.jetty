@@ -1,6 +1,6 @@
 (ns duct.server.http.jetty
   (:import org.eclipse.jetty.server.Server)
-  (:require [duct.core :as duct]
+  (:require [duct.logger :refer [log]]
             [integrant.core :as ig]
             [ring.adapter.jetty :as jetty]))
 
@@ -12,13 +12,13 @@
         options (-> opts
                     (dissoc :handler :logger)
                     (assoc :join? false))]
-    (duct/log @logger :info ::starting-server (select-keys opts [:port]))
+    (log @logger :info ::starting-server (select-keys opts [:port]))
     {:handler handler
      :logger  logger
      :server  (jetty/run-jetty (fn [req] (@@handler req)) options)}))
 
 (defmethod ig/halt-key! :duct.server.http/jetty [_ {:keys [server logger]}]
-  (duct/log @logger :info ::stopping-server)
+  (log @logger :info ::stopping-server)
   (.stop ^Server server))
 
 (defmethod ig/suspend-key! :duct.server.http/jetty [_ {:keys [handler]}]

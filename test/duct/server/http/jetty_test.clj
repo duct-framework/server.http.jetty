@@ -2,12 +2,12 @@
   (:import java.net.ConnectException)
   (:require [clj-http.client :as http]
             [clojure.test :refer :all]
-            [duct.core.protocols :as p]
+            [duct.logger :as logger]
             [duct.server.http.jetty :as jetty]
             [integrant.core :as ig]))
 
 (defrecord TestLogger [logs]
-  p/Logger
+  logger/Logger
   (-log [_ level ns-str file line event data]
     (swap! logs conj [event data])))
 
