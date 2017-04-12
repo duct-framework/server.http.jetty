@@ -1,4 +1,4 @@
-# server.http.jetty
+# Duct server.http.jetty
 
 Integrant multimethods for running a [Jetty][] server for the [Duct][]
 framework.
