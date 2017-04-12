@@ -1,6 +1,6 @@
 (defproject duct/server.http.jetty "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "Integrant methods for running a Jetty web server"
+  :url "https://github.com/duct-framework/server.http.jetty"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
