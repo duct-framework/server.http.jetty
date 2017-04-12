@@ -34,9 +34,11 @@ For example:
 
 A `:logger` key may also be specified, which will be used to log when
 the server starts and when it stops. The value of the key should be an
-implementation of the `duct.core.protocols/Logger` protocol.
+implementation of the `duct.logger/Logger` protocol from the
+[duct.logger][] library
 
 [ring jetty adapter]: https://ring-clojure.github.io/ring/ring.adapter.jetty.html
+[duct.logger]: https://github.com/duct-framework/logger
 
 ## License
 
