@@ -12,13 +12,13 @@
         options (-> opts
                     (dissoc :handler :logger)
                     (assoc :join? false))]
-    (log @logger :info ::starting-server (select-keys opts [:port]))
+    (log @logger :report ::starting-server (select-keys opts [:port]))
     {:handler handler
      :logger  logger
      :server  (jetty/run-jetty (fn [req] (@@handler req)) options)}))
 
 (defmethod ig/halt-key! :duct.server.http/jetty [_ {:keys [server logger]}]
-  (log @logger :info ::stopping-server)
+  (log @logger :report ::stopping-server)
   (.stop ^Server server))
 
 (defmethod ig/suspend-key! :duct.server.http/jetty [_ {:keys [handler]}]
