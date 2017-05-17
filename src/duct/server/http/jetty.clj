@@ -6,7 +6,7 @@
 
 (derive :duct.server.http/jetty :duct.server/http)
 
-(defmethod ig/init-key :duct.server.http/jetty [_ {:keys [logger] :as opts}]
+(defmethod ig/init-key :duct.server.http/jetty [_ {:keys [logger async?] :as opts}]
   (let [handler (atom (delay (:handler opts)))
         logger  (atom logger)
         options (-> opts
@@ -15,7 +15,9 @@
     (log @logger :report ::starting-server (select-keys opts [:port]))
     {:handler handler
      :logger  logger
-     :server  (jetty/run-jetty (fn [req] (@@handler req)) options)}))
+     :server  (if async?
+                (jetty/run-jetty (fn [req resp raise] (@@handler req resp raise)) options)
+                (jetty/run-jetty (fn [req] (@@handler req)) options))}))
 
 (defmethod ig/halt-key! :duct.server.http/jetty [_ {:keys [server logger]}]
   (log @logger :report ::stopping-server)

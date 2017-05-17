@@ -35,7 +35,19 @@
       (let [system (ig/init config)]
         (ig/halt! system)
         (ig/halt! system)
-        (is (-> system :duct.server.http/jetty :server .isStopped))))))
+        (is (-> system :duct.server.http/jetty :server .isStopped)))))
+
+  (testing "async server works"
+    (let [response {:status 200 :headers {} :body "test"}
+          handler  (fn [_ respond _] (respond response))
+          config   {:duct.server.http/jetty {:port 3400, :async? true, :handler handler}}
+          system   (ig/init config)]
+      (try
+        (let [response (http/get "http://127.0.0.1:3400/")]
+          (is (= (:status response) 200))
+          (is (= (:body response) "test")))
+        (finally
+          (ig/halt! system))))))
 
 (deftest resume-and-suspend-test
   (let [response1 {:status 200 :headers {} :body "foo"}
