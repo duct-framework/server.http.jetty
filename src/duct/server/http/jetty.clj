@@ -4,8 +4,6 @@
             [integrant.core :as ig]
             [ring.adapter.jetty :as jetty]))
 
-(derive :duct.server.http/jetty :duct.server/http)
-
 (defmethod ig/init-key :duct.server.http/jetty [_ {:keys [logger async?] :as opts}]
   (let [handler (atom (delay (:handler opts)))
         logger  (atom logger)

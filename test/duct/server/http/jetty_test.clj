@@ -2,6 +2,7 @@
   (:import java.net.ConnectException)
   (:require [clj-http.client :as http]
             [clojure.test :refer :all]
+            [duct.core :as duct]
             [duct.logger :as logger]
             [duct.server.http.jetty :as jetty]
             [integrant.core :as ig]))
@@ -10,6 +11,8 @@
   logger/Logger
   (-log [_ level ns-str file line event data]
     (swap! logs conj [event data])))
+
+(duct/load-hierarchy)
 
 (deftest key-test
   (is (isa? :duct.server.http/jetty :duct.server/http)))
