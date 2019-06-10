@@ -5,7 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [duct/core "0.7.0"]
-                 [duct/logger "0.1.1"]
+                 [duct/logger "0.3.0"]
                  [integrant "0.7.0"]
                  [ring/ring-jetty-adapter "1.7.1"]]
   :profiles
