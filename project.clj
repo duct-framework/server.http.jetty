@@ -1,4 +1,4 @@
-(defproject duct/server.http.jetty "0.2.0"
+(defproject duct/server.http.jetty "0.2.1"
   :description "Integrant methods for running a Jetty web server"
   :url "https://github.com/duct-framework/server.http.jetty"
   :license {:name "Eclipse Public License"

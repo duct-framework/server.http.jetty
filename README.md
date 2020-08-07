@@ -12,7 +12,7 @@ framework.
 
 To install, add the following to your project `:dependencies`:
 
-    [duct/server.http.jetty "0.2.0"]
+    [duct/server.http.jetty "0.2.1"]
 
 ## Usage
 
