@@ -8,4 +8,4 @@
                  [integrant "0.13.0"]
                  [ring/ring-jetty-adapter "1.13.0"]]
   :profiles
-  {:dev {:dependencies [[clj-http "3.12.1"]]}})
+  {:dev {:dependencies [[clj-http "3.13.0"]]}})
