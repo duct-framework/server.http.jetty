@@ -28,16 +28,14 @@ For example:
 ```clojure
 {:duct.server.http/jetty
  {:port    3000
-  :handler (fn [request]
-             {:status  200
-              :headers {"Content-Type" "text/plain"}
-              :body    "Hello World"})}}
+  :handler #ig/ref :app.example/handler}
+ :app.example/handler {}}
 ```
 
-A `:logger` key may also be specified, which will be used to log when
-the server starts and when it stops. The value of the key should be an
+A `:logger` key may also be specified, which is be used to log when the
+server starts and when it stops. The value of the key should be an
 implementation of the `duct.logger/Logger` protocol from the
-[duct.logger][] library
+[duct.logger][] library.
 
 [ring jetty adapter]: https://ring-clojure.github.io/ring/ring.adapter.jetty.html
 [duct.logger]: https://github.com/duct-framework/logger
