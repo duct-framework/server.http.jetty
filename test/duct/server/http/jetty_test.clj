@@ -1,18 +1,17 @@
 (ns duct.server.http.jetty-test
   (:import java.net.ConnectException)
   (:require [clj-http.client :as http]
-            [clojure.test :refer :all]
-            [duct.core :as duct]
+            [clojure.test :refer [deftest is testing]]
             [duct.logger :as logger]
             [duct.server.http.jetty :as jetty]
             [integrant.core :as ig]))
 
 (defrecord TestLogger [logs]
   logger/Logger
-  (-log [_ level ns-str file line id event data]
+  (-log [_ _level _ns-str _file _line _id event data]
     (swap! logs conj [event data])))
 
-(duct/load-hierarchy)
+(ig/load-hierarchy)
 
 (deftest key-test
   (is (isa? :duct.server.http/jetty :duct.server/http)))
@@ -43,7 +42,8 @@
   (testing "async server works"
     (let [response {:status 200 :headers {} :body "test"}
           handler  (fn [_ respond _] (respond response))
-          config   {:duct.server.http/jetty {:port 3400, :async? true, :handler handler}}
+          config   {:duct.server.http/jetty
+                    {:port 3400, :async? true, :handler handler}}
           system   (ig/init config)]
       (try
         (let [response (http/get "http://127.0.0.1:3400/")]
@@ -55,8 +55,10 @@
 (deftest resume-and-suspend-test
   (let [response1 {:status 200 :headers {} :body "foo"}
         response2 {:status 200 :headers {} :body "bar"}
-        config1   {:duct.server.http/jetty {:port 3400, :handler (constantly response1)}}
-        config2   {:duct.server.http/jetty {:port 3400, :handler (constantly response2)}}]
+        config1   {:duct.server.http/jetty
+                   {:port 3400, :handler (constantly response1)}}
+        config2   {:duct.server.http/jetty
+                   {:port 3400, :handler (constantly response2)}}]
 
     (testing "suspend and resume"
       (let [system1  (doto (ig/init config1) ig/suspend!)
@@ -105,8 +107,10 @@
     (testing "logger is replaced"
       (let [logs1   (atom [])
             logs2   (atom [])
-            config1 (assoc-in config1 [:duct.server.http/jetty :logger] (->TestLogger logs1))
-            config2 (assoc-in config2 [:duct.server.http/jetty :logger] (->TestLogger logs2))
+            config1 (assoc-in config1 [:duct.server.http/jetty :logger]
+                              (->TestLogger logs1))
+            config2 (assoc-in config2 [:duct.server.http/jetty :logger]
+                              (->TestLogger logs2))
             system1 (doto (ig/init config1) ig/suspend!)
             system2 (ig/resume config2 system1)]
         (ig/halt! system2)

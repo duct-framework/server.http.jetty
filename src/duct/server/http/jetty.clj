@@ -1,24 +1,27 @@
 (ns duct.server.http.jetty
   (:import org.eclipse.jetty.server.Server)
-  (:require [duct.logger :refer [log]]
+  (:require [duct.logger :as log]
             [integrant.core :as ig]
             [ring.adapter.jetty :as jetty]))
 
-(defmethod ig/init-key :duct.server.http/jetty [_ {:keys [logger async?] :as opts}]
+(defmethod ig/init-key :duct.server.http/jetty
+  [_ {:keys [logger async?] :as opts}]
   (let [handler (atom (delay (:handler opts)))
         logger  (atom logger)
         options (-> opts
                     (dissoc :handler :logger)
                     (assoc :join? false))]
-    (log @logger :report ::starting-server (select-keys opts [:port]))
+    (log/report @logger ::starting-server (select-keys opts [:port]))
     {:handler handler
      :logger  logger
-     :server  (if async?
-                (jetty/run-jetty (fn [req resp raise] (@@handler req resp raise)) options)
-                (jetty/run-jetty (fn [req] (@@handler req)) options))}))
+     :server  (jetty/run-jetty
+               (if async?
+                 (fn [req resp raise] (@@handler req resp raise))
+                 (fn [req] (@@handler req)))
+               options)}))
 
 (defmethod ig/halt-key! :duct.server.http/jetty [_ {:keys [server logger]}]
-  (log @logger :report ::stopping-server)
+  (log/report @logger ::stopping-server)
   (.stop ^Server server))
 
 (defmethod ig/suspend-key! :duct.server.http/jetty [_ {:keys [handler]}]
