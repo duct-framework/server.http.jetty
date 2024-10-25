@@ -8,7 +8,11 @@ framework.
 
 ## Installation
 
-To install, add the following to your project `:dependencies`:
+Add the following dependency to your deps.edn file:
+
+    duct/server.http.jetty {:mvn/version "0.2.1"}
+
+Or to your Leiningen project file:
 
     [duct/server.http.jetty "0.2.1"]
 
@@ -40,7 +44,7 @@ implementation of the `duct.logger/Logger` protocol from the
 
 ## License
 
-Copyright © 2020 James Reeves
+Copyright © 2024 James Reeves
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
