@@ -1,6 +1,4 @@
-# Duct server.http.jetty
-
-[![Build Status](https://travis-ci.org/duct-framework/server.http.jetty.svg?branch=master)](https://travis-ci.org/duct-framework/server.http.jetty)
+# Duct server.http.jetty [![Build Status](https://github.com/duct-framework/server.http.jetty/actions/workflows/test.yml/badge.svg)](https://github.com/duct-framework/logger.simple/actions/workflows/test.yml)
 
 Integrant multimethods for running a [Jetty][] server for the [Duct][]
 framework.
