@@ -1,4 +1,4 @@
-# Duct server.http.jetty [![Build Status](https://github.com/duct-framework/server.http.jetty/actions/workflows/test.yml/badge.svg)](https://github.com/duct-framework/logger.simple/actions/workflows/test.yml)
+# Duct server.http.jetty [![Build Status](https://github.com/duct-framework/server.http.jetty/actions/workflows/test.yml/badge.svg)](https://github.com/duct-framework/server.http.jetty/actions/workflows/test.yml)
 
 Integrant multimethods for running a [Jetty][] server for the [Duct][]
 framework.
