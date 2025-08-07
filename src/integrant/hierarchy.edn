@@ -1,1 +1,3 @@
-{:duct.server.http/jetty [:duct.server/http]}
+{:duct.server.http/jetty [:duct.server/http]
+ :duct.server/http [:duct/server]
+ :duct/server [:duct/daemon]}

@@ -14,7 +14,9 @@
 (ig/load-hierarchy)
 
 (deftest key-test
-  (is (isa? :duct.server.http/jetty :duct.server/http)))
+  (is (isa? :duct.server.http/jetty :duct.server/http))
+  (is (isa? :duct.server/http :duct/server))
+  (is (isa? :duct/server :duct/daemon)))
 
 (deftest init-and-halt-test
   (let [response {:status 200 :headers {} :body "test"}
