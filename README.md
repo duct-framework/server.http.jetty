@@ -42,7 +42,7 @@ implementation of the `duct.logger/Logger` protocol from the
 
 ## License
 
-Copyright © 2024 James Reeves
+Copyright © 2025 James Reeves
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
