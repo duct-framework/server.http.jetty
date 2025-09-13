@@ -6,6 +6,6 @@
   :dependencies [[org.clojure/clojure "1.12.2"]
                  [org.duct-framework/logger "0.4.0"]
                  [integrant "1.0.0"]
-                 [ring/ring-jetty-adapter "1.15.0"]]
+                 [ring/ring-jetty-adapter "1.15.1"]]
   :profiles
   {:dev {:dependencies [[clj-http "3.13.1"]]}})
