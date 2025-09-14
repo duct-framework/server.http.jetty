@@ -1,0 +1,13 @@
+{:duct.server.http/jetty
+ {:doc
+  "Starts a HTTP server using the [Ring][1] Jetty adapter. Takes the following
+  options:
+  - `:handler` - the Ring handler function to use
+  - `:logger` - a logger satisfying `duct.logger/Logger` (optional)
+  - `:port` - the port number to listen on
+
+  In addition, all of the options supported by the [run-jetty][2] function
+  are also supported.
+
+  [1]: https://github.com/ring-clojure/ring
+  [2]: https://ring-clojure.github.io/ring/ring.adapter.jetty.html#var-run-jetty"}}
