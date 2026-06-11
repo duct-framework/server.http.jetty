@@ -10,11 +10,11 @@ framework.
 
 Add the following dependency to your deps.edn file:
 
-    org.duct-framework/server.http.jetty {:mvn/version "0.3.4"}
+    org.duct-framework/server.http.jetty {:mvn/version "0.3.5"}
 
 Or to your Leiningen project file:
 
-    [org.duct-framework/server.http.jetty "0.3.4"]
+    [org.duct-framework/server.http.jetty "0.3.5"]
 
 ## Usage
 
